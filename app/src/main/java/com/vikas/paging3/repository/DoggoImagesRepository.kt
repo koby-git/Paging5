@@ -1,14 +1,11 @@
-package com.vikas.paging3.data
+package com.vikas.paging3.repository
 
-import androidx.lifecycle.LiveData
 import androidx.paging.*
-import androidx.paging.rxjava2.observable
 import com.vikas.paging3.model.DoggoImageModel
-import com.vikas.paging3.repository.local.AppDatabase
-import com.vikas.paging3.repository.local.LocalInjector
-import com.vikas.paging3.repository.remote.DoggoApiService
-import com.vikas.paging3.repository.remote.RemoteInjector
-import io.reactivex.Observable
+import com.vikas.paging3.data.local.AppDatabase
+import com.vikas.paging3.data.local.LocalInjector
+import com.vikas.paging3.data.remote.DoggoApiService
+import com.vikas.paging3.data.remote.RemoteInjector
 import kotlinx.coroutines.flow.Flow
 
 /**

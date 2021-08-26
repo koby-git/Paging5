@@ -1,4 +1,4 @@
-package com.vikas.paging3.repository.local
+package com.vikas.paging3.data.local
 
 import android.content.Context
 import androidx.room.Database

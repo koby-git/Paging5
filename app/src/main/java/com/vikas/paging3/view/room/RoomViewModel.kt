@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.vikas.paging3.data.DoggoImagesRepository
+import com.vikas.paging3.repository.DoggoImagesRepository
 import com.vikas.paging3.model.DoggoImageModel
 import kotlinx.coroutines.flow.Flow
 

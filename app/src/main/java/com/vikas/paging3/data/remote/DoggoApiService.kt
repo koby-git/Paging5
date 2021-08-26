@@ -1,4 +1,4 @@
-package com.vikas.paging3.repository.remote
+package com.vikas.paging3.data.remote
 
 import com.vikas.paging3.model.DoggoImageModel
 import retrofit2.http.GET

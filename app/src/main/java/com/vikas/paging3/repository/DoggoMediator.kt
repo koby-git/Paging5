@@ -1,15 +1,15 @@
-package com.vikas.paging3.data
+package com.vikas.paging3.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.vikas.paging3.data.DoggoImagesRepository.Companion.DEFAULT_PAGE_INDEX
+import com.vikas.paging3.repository.DoggoImagesRepository.Companion.DEFAULT_PAGE_INDEX
 import com.vikas.paging3.model.DoggoImageModel
-import com.vikas.paging3.repository.local.AppDatabase
-import com.vikas.paging3.repository.local.RemoteKeys
-import com.vikas.paging3.repository.remote.DoggoApiService
+import com.vikas.paging3.data.local.AppDatabase
+import com.vikas.paging3.data.local.RemoteKeys
+import com.vikas.paging3.data.remote.DoggoApiService
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.InvalidObjectException

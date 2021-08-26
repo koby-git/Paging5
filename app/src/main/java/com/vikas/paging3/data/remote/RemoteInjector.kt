@@ -1,4 +1,4 @@
-package com.vikas.paging3.repository.remote
+package com.vikas.paging3.data.remote
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
