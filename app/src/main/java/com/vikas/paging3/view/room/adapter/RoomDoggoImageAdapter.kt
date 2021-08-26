@@ -9,17 +9,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import com.vikas.paging3.R
-import com.vikas.paging3.model.DoggoImageModel
+import com.vikas.paging3.model.Movie
 
 class RoomDoggoImageAdapter :
-    PagingDataAdapter<DoggoImageModel, RoomDoggoImageAdapter.DoggoImageViewHolder>(REPO_COMPARATOR) {
+    PagingDataAdapter<Movie, RoomDoggoImageAdapter.DoggoImageViewHolder>(REPO_COMPARATOR) {
 
     companion object {
-        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<DoggoImageModel>() {
-            override fun areItemsTheSame(oldItem: DoggoImageModel, newItem: DoggoImageModel) =
+        private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie) =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: DoggoImageModel, newItem: DoggoImageModel) =
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie) =
                 oldItem.id == newItem.id
         }
     }
@@ -48,9 +48,9 @@ class RoomDoggoImageAdapter :
 
         var ivDoggoMain: ImageView = view.findViewById(R.id.ivDoggoMain)
 
-        fun bind(item: DoggoImageModel?) {
+        fun bind(item: Movie?) {
             //loads image from network using coil extension function
-            ivDoggoMain.load(item?.url) { placeholder(R.drawable.doggo_placeholder) }
+            ivDoggoMain.load(item?.imageUrl) { placeholder(R.drawable.doggo_placeholder) }
         }
     }
 

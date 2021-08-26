@@ -2,9 +2,9 @@ package com.vikas.paging3.repository
 
 import androidx.paging.*
 import com.vikas.paging3.Constants.DEFAULT_PAGE_SIZE
-import com.vikas.paging3.model.DoggoImageModel
-import com.vikas.paging3.data.local.AppDatabase
-import com.vikas.paging3.data.remote.DoggoApiService
+import com.vikas.paging3.data.local.MovieDatabase
+import com.vikas.paging3.data.remote.TheMovieDbService
+import com.vikas.paging3.model.Movie
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -14,8 +14,8 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 class DoggoImagesRepository
     @Inject constructor(
-    val doggoApiService: DoggoApiService,
-    val appDatabase: AppDatabase
+    val doggoApiService: TheMovieDbService,
+    val appDatabase: MovieDatabase
 ) {
 
 
@@ -56,10 +56,10 @@ class DoggoImagesRepository
         return PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
     }
 
-    fun letDoggoImagesFlowDb(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<DoggoImageModel>> {
+    fun letDoggoImagesFlowDb(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<Movie>> {
         if (appDatabase == null) throw IllegalStateException("Database is not initialized")
 
-        val pagingSourceFactory = { appDatabase.getDoggoImageModelDao().getAllDoggoModel() }
+        val pagingSourceFactory = { appDatabase.movieDao().getDiscoverMovieList() }
         return Pager(
             config = pagingConfig,
             pagingSourceFactory = pagingSourceFactory,

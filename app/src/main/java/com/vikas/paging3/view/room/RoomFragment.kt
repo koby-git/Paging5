@@ -46,7 +46,8 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
 
     private fun setUpViews(view: View) {
         rvDoggoRoom = view.findViewById(R.id.rvDoggoRoom)
-        rvDoggoRoom.layoutManager = GridLayoutManager(context, 2)
-        rvDoggoRoom.adapter = adapter.withLoadStateFooter(loaderStateAdapter)
+        rvDoggoRoom.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = loaderStateAdapter,
+            footer = loaderStateAdapter)
     }
 }

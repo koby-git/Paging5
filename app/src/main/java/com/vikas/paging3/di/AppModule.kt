@@ -5,10 +5,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
 import com.vikas.paging3.Constants.API_ENDPOINT
 import com.vikas.paging3.Constants.API_KEY
-import com.vikas.paging3.Constants.DOGGO_DB
 import com.vikas.paging3.Constants.HEADER_API_KEY
-import com.vikas.paging3.data.local.AppDatabase
-import com.vikas.paging3.data.remote.DoggoApiService
+import com.vikas.paging3.Constants.MOVIE_DB
+import com.vikas.paging3.data.local.MovieDatabase
+import com.vikas.paging3.data.remote.TheMovieDbService
 import com.vikas.paging3.repository.DoggoImagesRepository
 import dagger.Module
 import dagger.Provides
@@ -20,7 +20,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
@@ -36,14 +36,14 @@ object AppModule {
     ) = Room
         .databaseBuilder(
             context.applicationContext,
-            AppDatabase::class.java,
-            DOGGO_DB
+            MovieDatabase::class.java,
+            MOVIE_DB
         ).build()
 
     @Singleton
     @Provides
-    fun injectDoggoApiService(retrofit: Retrofit): DoggoApiService {
-        return retrofit.create(DoggoApiService::class.java)
+    fun injectDoggoApiService(retrofit: Retrofit): TheMovieDbService {
+        return retrofit.create(TheMovieDbService::class.java)
     }
 
     @Singleton
@@ -51,7 +51,7 @@ object AppModule {
     fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(API_ENDPOINT)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
     }
@@ -94,8 +94,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideDoggoImagesRepository(
-        doggoApiService: DoggoApiService,
-        appDatabase: AppDatabase
+        doggoApiService: TheMovieDbService,
+        appDatabase: MovieDatabase
     ) = DoggoImagesRepository(doggoApiService,appDatabase)
 
     @Singleton

@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.vikas.paging3.model.Movie
 import com.vikas.paging3.repository.DoggoImagesRepository
-import com.vikas.paging3.model.DoggoImageModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -19,7 +19,7 @@ class RoomViewModel
 ) :
     ViewModel() {
 
-    fun fetchDoggoImages(): Flow<PagingData<DoggoImageModel>> {
+    fun fetchDoggoImages(): Flow<PagingData<Movie>> {
         return repository.letDoggoImagesFlowDb().cachedIn(viewModelScope)
     }
 

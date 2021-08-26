@@ -1,27 +1,27 @@
 package com.vikas.paging3.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.vikas.paging3.Constants.DEFAULT_PAGE_INDEX
-import com.vikas.paging3.model.DoggoImageModel
-import com.vikas.paging3.data.local.AppDatabase
+import com.vikas.paging3.data.local.MovieDatabase
 import com.vikas.paging3.data.local.RemoteKeys
-import com.vikas.paging3.data.remote.DoggoApiService
+import com.vikas.paging3.data.remote.TheMovieDbService
+import com.vikas.paging3.model.Movie
 import retrofit2.HttpException
 import java.io.IOException
-import java.io.InvalidObjectException
 
 
 @ExperimentalPagingApi
-class DoggoMediator(val doggoApiService: DoggoApiService, val appDatabase: AppDatabase) :
-    RemoteMediator<Int, DoggoImageModel>() {
+class DoggoMediator(
+    val doggoApiService: TheMovieDbService,
+    val appDatabase: MovieDatabase
+    ) : RemoteMediator<Int, Movie>() {
 
     override suspend fun load(
-        loadType: LoadType, state: PagingState<Int, DoggoImageModel>
+        loadType: LoadType, state: PagingState<Int, Movie>
     ): MediatorResult {
 
         val page = when (loadType) {
@@ -50,21 +50,22 @@ class DoggoMediator(val doggoApiService: DoggoApiService, val appDatabase: AppDa
         }
 
         try {
-            val response = doggoApiService.getDoggoImages(page, state.config.pageSize)
+//            val response = doggoApiService.getDoggoImages(page, state.config.pageSize)
+            val response = doggoApiService.getDiscoverMoviesList(page = page).results
             val isEndOfList = response.isEmpty()
             appDatabase.withTransaction {
                 // clear all tables in the database
                 if (loadType == LoadType.REFRESH) {
-                    appDatabase.getRepoDao().clearRemoteKeys()
-                    appDatabase.getDoggoImageModelDao().clearAllDoggos()
+                    appDatabase.remoteKeysDao().clearRemoteKeys()
+                    appDatabase.movieDao().deleteAllMovies()
                 }
                 val prevKey = if (page == DEFAULT_PAGE_INDEX) null else page - 1
                 val nextKey = if (isEndOfList) null else page + 1
                 val keys = response.map {
                     RemoteKeys(repoId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
-                appDatabase.getRepoDao().insertAll(keys)
-                appDatabase.getDoggoImageModelDao().insertAll(response)
+                appDatabase.remoteKeysDao().insertAll(keys)
+                appDatabase.movieDao().insertAll(response)
             }
             return MediatorResult.Success(endOfPaginationReached = isEndOfList)
         } catch (exception: IOException) {
@@ -103,30 +104,30 @@ class DoggoMediator(val doggoApiService: DoggoApiService, val appDatabase: AppDa
     /**
      * get the last remote key inserted which had the data
      */
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Movie>): RemoteKeys? {
         return state.pages
             .lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
-            ?.let { doggo -> appDatabase.getRepoDao().remoteKeysDoggoId(doggo.id) }
+            ?.let { doggo -> appDatabase.remoteKeysDao().remoteKeysDoggoId(doggo.id) }
     }
 
     /**
      * get the first remote key inserted which had the data
      */
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Movie>): RemoteKeys? {
         return state.pages
             .firstOrNull() { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { doggo -> appDatabase.getRepoDao().remoteKeysDoggoId(doggo.id) }
+            ?.let { doggo -> appDatabase.remoteKeysDao().remoteKeysDoggoId(doggo.id) }
     }
 
     /**
      * get the closest remote key inserted which had the data
      */
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Movie>): RemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { repoId ->
-                appDatabase.getRepoDao().remoteKeysDoggoId(repoId)
+                appDatabase.remoteKeysDao().remoteKeysDoggoId(repoId)
             }
         }
     }
