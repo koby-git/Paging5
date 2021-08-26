@@ -9,7 +9,7 @@ import com.vikas.paging3.Constants.HEADER_API_KEY
 import com.vikas.paging3.Constants.MOVIE_DB
 import com.vikas.paging3.data.local.MovieDatabase
 import com.vikas.paging3.data.remote.TheMovieDbService
-import com.vikas.paging3.repository.DoggoImagesRepository
+import com.vikas.paging3.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +31,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideAppDatabase(
+    fun provideMovieDatabase(
         @ApplicationContext context: Context
     ) = Room
         .databaseBuilder(
@@ -42,13 +42,13 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun injectDoggoApiService(retrofit: Retrofit): TheMovieDbService {
+    fun provideTheMovieDbService(retrofit: Retrofit): TheMovieDbService {
         return retrofit.create(TheMovieDbService::class.java)
     }
 
     @Singleton
     @Provides
-    fun getRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
@@ -59,7 +59,7 @@ object AppModule {
     @ExperimentalPagingApi
     @Singleton
     @Provides
-    fun getOkHttpNetworkInterceptor(): Interceptor {
+    fun provideOkHttpNetworkInterceptor(): Interceptor {
         return Interceptor { chain ->
             val newRequest =
                 chain.request().newBuilder().addHeader(HEADER_API_KEY, API_KEY).build()
@@ -70,7 +70,7 @@ object AppModule {
     @ExperimentalPagingApi
     @Singleton
     @Provides
-    fun getHttpLogger(): HttpLoggingInterceptor {
+    fun provideHttpLogger(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -79,9 +79,9 @@ object AppModule {
     @ExperimentalPagingApi
     @Singleton
     @Provides
-    fun getOkHttpClient(
-        okHttpLogger: HttpLoggingInterceptor = getHttpLogger(),
-        okHttpNetworkInterceptor: Interceptor = getOkHttpNetworkInterceptor()
+    fun provideOkHttpClient(
+        okHttpLogger: HttpLoggingInterceptor,
+        okHttpNetworkInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(okHttpLogger)
@@ -96,7 +96,7 @@ object AppModule {
     fun provideDoggoImagesRepository(
         doggoApiService: TheMovieDbService,
         appDatabase: MovieDatabase
-    ) = DoggoImagesRepository(doggoApiService,appDatabase)
+    ) = MovieRepository(doggoApiService,appDatabase)
 
     @Singleton
     @Provides

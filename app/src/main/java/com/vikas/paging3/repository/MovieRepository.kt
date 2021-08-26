@@ -12,7 +12,7 @@ import javax.inject.Inject
  * repository class to manage the data flow and map it if needed
  */
 @ExperimentalPagingApi
-class DoggoImagesRepository
+class MovieRepository
     @Inject constructor(
     val doggoApiService: TheMovieDbService,
     val appDatabase: MovieDatabase
@@ -63,7 +63,7 @@ class DoggoImagesRepository
         return Pager(
             config = pagingConfig,
             pagingSourceFactory = pagingSourceFactory,
-            remoteMediator = DoggoMediator(doggoApiService, appDatabase)
+            remoteMediator = MovieMediator(doggoApiService, appDatabase)
         ).flow
     }
 

@@ -1,4 +1,4 @@
-package com.vikas.paging3.view.room
+package com.vikas.paging3.view.discover
 
 import android.os.Bundle
 import android.view.View
@@ -6,21 +6,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vikas.paging3.R
-import com.vikas.paging3.view.room.adapter.LoaderDoggoImageAdapter
-import com.vikas.paging3.view.room.adapter.LoaderStateAdapter
+import com.vikas.paging3.view.discover.adapter.MoviePagingAdapter
+import com.vikas.paging3.view.discover.adapter.LoaderStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @ExperimentalPagingApi
-class RoomFragment : Fragment(R.layout.fragment_room) {
+class DiscoverFragment : Fragment(R.layout.fragment_room) {
 
     lateinit var rvDoggoRoom: RecyclerView
-    lateinit var roomViewModel: RoomViewModel
-    lateinit var adapter: LoaderDoggoImageAdapter
+    lateinit var roomViewModel: DiscoverViewModel
+    lateinit var adapter: MoviePagingAdapter
     lateinit var loaderStateAdapter: LoaderStateAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,8 +38,8 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
     }
 
     private fun initMembers() {
-        roomViewModel = ViewModelProvider(requireActivity()).get(RoomViewModel::class.java)
-        adapter = LoaderDoggoImageAdapter()
+        roomViewModel = ViewModelProvider(requireActivity()).get(DiscoverViewModel::class.java)
+        adapter = MoviePagingAdapter()
         loaderStateAdapter = LoaderStateAdapter { adapter.retry() }
     }
 
