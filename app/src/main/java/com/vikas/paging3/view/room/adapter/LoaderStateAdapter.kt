@@ -1,10 +1,15 @@
 package com.vikas.paging3.view.room.adapter
 
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +19,7 @@ class LoaderStateAdapter(private val retry: () -> Unit) :
     LoadStateAdapter<LoaderStateAdapter.LoaderViewHolder>() {
 
     override fun onBindViewHolder(holder: LoaderViewHolder, loadState: LoadState) {
-        holder.bind(loadState)
+        holder.bindState(loadState)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoaderViewHolder {
@@ -35,19 +40,24 @@ class LoaderStateAdapter(private val retry: () -> Unit) :
             }
         }
 
-        val motionLayout: MotionLayout = view.findViewById(R.id.mlLoader)
+        private val errorMessage: TextView = view.findViewById(R.id.error_msg)
+        private val progressBar: ProgressBar = view.findViewById(R.id.progress_bar)
+        private val retryButton: Button = view.findViewById(R.id.retry_button)
 
         init {
-            view.findViewById<Button>(R.id.btnRetry).setOnClickListener {
-                retry()
+            retryButton.setOnClickListener {
+                retry.invoke()
             }
         }
 
-        fun bind(loadState: LoadState) {
-            if (loadState is LoadState.Loading) {
-                motionLayout.transitionToEnd()
-            } else {
-                motionLayout.transitionToStart()
+        fun bindState(loadState: LoadState) {
+            d("BindState","LoadingState")
+            progressBar.isVisible = loadState is LoadState.Loading
+            retryButton.isVisible = loadState is LoadState.Error
+            errorMessage.isVisible = loadState is LoadState.Error
+
+            if (loadState is LoadState.Error) {
+                errorMessage.text = loadState.error.localizedMessage
             }
         }
     }

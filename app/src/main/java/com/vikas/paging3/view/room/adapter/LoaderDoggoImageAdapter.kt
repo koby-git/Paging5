@@ -8,6 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.vikas.paging3.Constants.IMAGE_BASE_URL
 import com.vikas.paging3.R
 import com.vikas.paging3.model.Movie
