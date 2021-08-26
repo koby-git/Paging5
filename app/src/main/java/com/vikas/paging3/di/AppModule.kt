@@ -5,6 +5,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
 import com.vikas.paging3.Constants.API_ENDPOINT
 import com.vikas.paging3.Constants.API_KEY
+import com.vikas.paging3.Constants.DOGGO_DB
 import com.vikas.paging3.Constants.HEADER_API_KEY
 import com.vikas.paging3.data.local.AppDatabase
 import com.vikas.paging3.data.remote.DoggoApiService
@@ -33,8 +34,10 @@ object AppModule {
     fun provideAppDatabase(
         @ApplicationContext context: Context
     ) = Room
-        .databaseBuilder(context.applicationContext, AppDatabase::class.java,
-            AppDatabase.DOGGO_DB
+        .databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            DOGGO_DB
         ).build()
 
     @Singleton
