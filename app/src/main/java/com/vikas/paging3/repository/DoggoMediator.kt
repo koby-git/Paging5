@@ -5,7 +5,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.vikas.paging3.repository.DoggoImagesRepository.Companion.DEFAULT_PAGE_INDEX
+import com.vikas.paging3.Constants.DEFAULT_PAGE_INDEX
 import com.vikas.paging3.model.DoggoImageModel
 import com.vikas.paging3.data.local.AppDatabase
 import com.vikas.paging3.data.local.RemoteKeys

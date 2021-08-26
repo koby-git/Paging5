@@ -1,29 +1,23 @@
 package com.vikas.paging3.repository
 
 import androidx.paging.*
+import com.vikas.paging3.Constants.DEFAULT_PAGE_SIZE
 import com.vikas.paging3.model.DoggoImageModel
 import com.vikas.paging3.data.local.AppDatabase
-import com.vikas.paging3.data.local.LocalInjector
 import com.vikas.paging3.data.remote.DoggoApiService
-import com.vikas.paging3.data.remote.RemoteInjector
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 /**
  * repository class to manage the data flow and map it if needed
  */
 @ExperimentalPagingApi
-class DoggoImagesRepository(
-    val doggoApiService: DoggoApiService = RemoteInjector.injectDoggoApiService(),
-    val appDatabase: AppDatabase? = LocalInjector.injectDb()
+class DoggoImagesRepository
+    @Inject constructor(
+    val doggoApiService: DoggoApiService,
+    val appDatabase: AppDatabase
 ) {
 
-    companion object {
-        const val DEFAULT_PAGE_INDEX = 1
-        const val DEFAULT_PAGE_SIZE = 20
-
-        //get doggo repository instance
-        fun getInstance() = DoggoImagesRepository()
-    }
 
     /**
      * calling the paging source to give results from api calls

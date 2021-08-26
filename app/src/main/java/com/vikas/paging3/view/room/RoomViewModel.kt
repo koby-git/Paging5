@@ -7,10 +7,16 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.vikas.paging3.repository.DoggoImagesRepository
 import com.vikas.paging3.model.DoggoImageModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 @ExperimentalPagingApi
-class RoomViewModel(val repository: DoggoImagesRepository = DoggoImagesRepository.getInstance()) :
+@HiltViewModel
+class RoomViewModel
+@Inject constructor(
+    private val repository: DoggoImagesRepository
+) :
     ViewModel() {
 
     fun fetchDoggoImages(): Flow<PagingData<DoggoImageModel>> {

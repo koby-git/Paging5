@@ -3,6 +3,7 @@ package com.vikas.paging3.view.room
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
@@ -38,7 +39,7 @@ class RoomFragment : Fragment(R.layout.fragment_room) {
     }
 
     private fun initMembers() {
-        roomViewModel = defaultViewModelProviderFactory.create(RoomViewModel::class.java)
+        roomViewModel = ViewModelProvider(requireActivity()).get(RoomViewModel::class.java)
         adapter = LoaderDoggoImageAdapter()
         loaderStateAdapter = LoaderStateAdapter { adapter.retry() }
     }
