@@ -33,7 +33,7 @@
         android:id="@+id/rvDoggoRoom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="16dp"
+
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         app:spanCount="2"
         app:layout_constraintBottom_toBottomOf="parent"
