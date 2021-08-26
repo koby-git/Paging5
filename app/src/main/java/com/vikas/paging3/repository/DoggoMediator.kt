@@ -1,5 +1,6 @@
 package com.vikas.paging3.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -23,13 +24,28 @@ class DoggoMediator(val doggoApiService: DoggoApiService, val appDatabase: AppDa
         loadType: LoadType, state: PagingState<Int, DoggoImageModel>
     ): MediatorResult {
 
-        val pageKeyData = getKeyPageData(loadType, state)
-        val page = when (pageKeyData) {
-            is MediatorResult.Success -> {
-                return pageKeyData
+        val page = when (loadType) {
+            LoadType.REFRESH -> {
+                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                remoteKeys?.nextKey?.minus(1) ?: DEFAULT_PAGE_INDEX
             }
-            else -> {
-                pageKeyData as Int
+            LoadType.PREPEND -> {
+
+                val remoteKeys = getRemoteKeyForFirstItem(state)
+                val prevKey = remoteKeys?.prevKey
+                if (prevKey == null) {
+                    return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                }
+                prevKey
+            }
+            LoadType.APPEND -> {
+
+                val remoteKeys = getRemoteKeyForLastItem(state)
+                val nextKey = remoteKeys?.nextKey
+                if (nextKey == null) {
+                    return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
+                }
+                nextKey
             }
         }
 
@@ -61,31 +77,33 @@ class DoggoMediator(val doggoApiService: DoggoApiService, val appDatabase: AppDa
     /**
      * this returns the page key or the final end of list success result
      */
-    suspend fun getKeyPageData(loadType: LoadType, state: PagingState<Int, DoggoImageModel>): Any? {
-        return when (loadType) {
-            LoadType.REFRESH -> {
-                val remoteKeys = getClosestRemoteKey(state)
-                remoteKeys?.nextKey?.minus(1) ?: DEFAULT_PAGE_INDEX
-            }
-            LoadType.APPEND -> {
-                val remoteKeys = getLastRemoteKey(state)
-                    ?: throw InvalidObjectException("Remote key should not be null for $loadType")
-                remoteKeys.nextKey
-            }
-            LoadType.PREPEND -> {
-                val remoteKeys = getFirstRemoteKey(state)
-                    ?: throw InvalidObjectException("Invalid state, key should not be null")
-                //end of list condition reached
-                remoteKeys.prevKey ?: return MediatorResult.Success(endOfPaginationReached = true)
-                remoteKeys.prevKey
+    /*
+        suspend fun getKeyPageData(loadType: LoadType, state: PagingState<Int, DoggoImageModel>): Any? {
+            return when (loadType) {
+                LoadType.REFRESH -> {
+                    val remoteKeys = getClosestRemoteKey(state)
+                    remoteKeys?.nextKey?.minus(1) ?: DEFAULT_PAGE_INDEX
+                }
+                LoadType.APPEND -> {
+                    val remoteKeys = getLastRemoteKey(state)
+                        ?: throw InvalidObjectException("Remote key should not be null for $loadType")
+                    remoteKeys.nextKey
+                }
+                LoadType.PREPEND -> {
+                    val remoteKeys = getFirstRemoteKey(state)
+                        ?: throw InvalidObjectException("Invalid state, key should not be null")
+                    //end of list condition reached
+                    remoteKeys.prevKey ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    remoteKeys.prevKey
+                }
             }
         }
-    }
+    */
 
     /**
      * get the last remote key inserted which had the data
      */
-    private suspend fun getLastRemoteKey(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
         return state.pages
             .lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
@@ -95,7 +113,7 @@ class DoggoMediator(val doggoApiService: DoggoApiService, val appDatabase: AppDa
     /**
      * get the first remote key inserted which had the data
      */
-    private suspend fun getFirstRemoteKey(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
         return state.pages
             .firstOrNull() { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
@@ -105,7 +123,7 @@ class DoggoMediator(val doggoApiService: DoggoApiService, val appDatabase: AppDa
     /**
      * get the closest remote key inserted which had the data
      */
-    private suspend fun getClosestRemoteKey(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, DoggoImageModel>): RemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { repoId ->
                 appDatabase.getRepoDao().remoteKeysDoggoId(repoId)
