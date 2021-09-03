@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Paging3</string>
-    <string name="menu_remote">Remote</string>
-    <string name="menu_loader">Loader</string>
-    <string name="menu_room">Room</string>
+    <string name="menu_discover">Discover</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_home">Home</string>
     <string name="label_title_remote">Paging with remote doggo api service as data source</string>
     <string name="label_title_room">Paging with room as data source </string>
     <string name="label_title_loader">Paging with footer for showing loader</string>
@@ -11,9 +11,22 @@
     <string name="label_error">Something went wrong, please try again</string>
     <string name="loading">Loading</string>
     <string name="language">Language: %s</string>
-    <string name="search_hint">GitHub Repository</string>
+    <string name="search_hint">Search movie</string>
     <string name="no_results">No results 😓</string>
     <string name="unknown">\?</string>
     <string name="retry">Retry</string>
+
+    <string name="settings">settings</string>
+    <string name="language_en">english</string>
+    <string name="language_iw">Hebrew</string>
+    <string name="language_es">Spanish</string>
+    <string name="now_in_cinemas">Now in cinemas</string>
+    <string name="trendings">Trendings</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top rated</string>
+
+    <string name="genre">Genres: %1$s</string>
+    <string name="rating">Rating: %1$s</string>
+    <string name="no_rating">None</string>
 
 </resources>

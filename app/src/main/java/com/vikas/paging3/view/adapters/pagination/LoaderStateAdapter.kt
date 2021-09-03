@@ -1,4 +1,4 @@
-package com.vikas.paging3.view.discover.adapter
+package com.vikas.paging3.view.adapters.pagination
 
 import android.util.Log.d
 import android.view.LayoutInflater
@@ -30,10 +30,9 @@ class LoaderStateAdapter(private val retry: () -> Unit) :
     class LoaderViewHolder(view: View, retry: () -> Unit) : RecyclerView.ViewHolder(view) {
 
         companion object {
-            //get instance of the DoggoImageViewHolder
             fun getInstance(parent: ViewGroup, retry: () -> Unit): LoaderViewHolder {
                 val inflater = LayoutInflater.from(parent.context)
-                val view = inflater.inflate(R.layout.item_doggo_loader, parent, false)
+                val view = inflater.inflate(R.layout.item_paging_loader, parent, false)
                 return LoaderViewHolder(view, retry)
             }
         }

@@ -3,14 +3,15 @@ package com.vikas.paging3.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import com.vikas.paging3.Constants.MOVIE_TABLE
+import com.vikas.paging3.util.Constants.MOVIE_TABLE
+import java.io.Serializable
 
 @Entity(tableName = MOVIE_TABLE)
 data class Movie(
     @PrimaryKey
     @SerializedName("id")
     val id: String,
-    val title: String,
+    val title: String? = null,
     @SerializedName("release_date")
     val releaseDate: String ? = null,
     @SerializedName("poster_path")
@@ -21,5 +22,9 @@ data class Movie(
     //My Fields
     var isFavourite :Boolean = false,
     var isPopular:Boolean = false,
-    var isDiscover:Boolean = false
-)
+    var isDiscover:Boolean = false,
+    var isSearched:Boolean = false,
+
+
+
+) : Serializable

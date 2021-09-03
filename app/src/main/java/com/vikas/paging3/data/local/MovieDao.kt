@@ -13,10 +13,19 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(movies: List<Movie>): LongArray
 
-    @Query("DELETE FROM movie_table")
-    suspend fun deleteAllMovies()
+    @Query("DELETE FROM movie_table WHERE isDiscover = 1")
+    suspend fun deleteDiscoverMovies()
 
-    @Query("SELECT * FROM movie_table ")
+    @Query("DELETE FROM movie_table WHERE isSearched = 1")
+    suspend fun deleteSearchMovies()
+
+    @Query("SELECT * FROM movie_table WHERE isDiscover = 1")
     fun getDiscoverMovieList() : PagingSource<Int,Movie>
+
+    @Query("SELECT * FROM movie_table WHERE isSearched = 1")
+    fun getSearchedMovieList() : PagingSource<Int,Movie>
+
+    @Query("SELECT * FROM movie_table WHERE isPopular = 1")
+    fun getPopularMovieList() : PagingSource<Int,Movie>
 
 }

@@ -1,4 +1,4 @@
-package com.vikas.paging3.data.remote
+package com.vikas.paging3.data.remote.tmdb.response
 
 import com.google.gson.annotations.SerializedName
 import com.vikas.paging3.model.Movie

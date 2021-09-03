@@ -2,16 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/remote"
-        android:icon="@drawable/ic_outline_remote"
-        android:title="@string/menu_remote" />
-    <item
-        android:id="@+id/loader"
-        android:icon="@drawable/ic_baseline_loader"
-        android:title="@string/menu_loader" />
-    <item
-        android:id="@+id/room"
-        android:icon="@drawable/ic_outline_room"
-        android:title="@string/menu_room" />
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/menu_home" />
 
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/ic_baseline_loader"
+        android:title="@string/menu_search" />
+
+    <item
+        android:id="@+id/discoverFragment"
+        android:icon="@drawable/ic_outline_remote"
+        android:title="@string/menu_discover" />
 </menu>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="search_hint">Search movie</string>
+    <string name="now_in_cinemas">Now in cinemas</string>
+    <string name="trendings">Trendings</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top rated</string>
+    <string name="menu_discover">Discover</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_home">Home</string>
+</resources>

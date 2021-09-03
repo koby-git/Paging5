@@ -11,10 +11,10 @@ interface RemoteKeysDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteKey: List<RemoteKeys>)
 
-    @Query("SELECT * FROM remotekeys WHERE repoId = :id")
-    suspend fun remoteKeysDoggoId(id: String): RemoteKeys?
+    @Query("SELECT * FROM REMOTE_KEYS_TABLE WHERE movieId = :id")
+    suspend fun remoteKeysMovieId(id: String): RemoteKeys?
 
-    @Query("DELETE FROM remotekeys")
+    @Query("DELETE FROM REMOTE_KEYS_TABLE")
     suspend fun clearRemoteKeys()
 }
 
