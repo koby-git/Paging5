@@ -3,6 +3,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.paging.ExperimentalPagingApi
+import com.vikas.paging3.model.Movie
 import com.vikas.paging3.model.MovieCategory
 import com.vikas.paging3.repository.MovieRepository
 import com.vikas.paging3.util.Resource
@@ -24,6 +25,13 @@ class HomeViewModel
 
     val movieCategory: LiveData<Result<List<MovieCategory>>>
         get() = _movieCategory
+
+    private val _trendMovie:LiveData<Movie> = repository.letDailyTrendMovieFlowDb()
+        .distinctUntilChanged()
+        .asLiveData()
+
+    val trendMovie: LiveData<Movie>
+        get() = _trendMovie
 
 }
 

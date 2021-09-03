@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import com.vikas.paging3.util.Result
+import kotlin.random.Random
 
 /**
  * repository class to manage the data flow and map it if needed
@@ -86,7 +87,7 @@ class MovieRepository
             })
 
         categoryMovieList.add(
-            MovieCategory(context.getString(R.string.trendings)).also {
+            MovieCategory(context.getString(R.string.trending)).also {
                 it.result.addAll(theMovieDbService.getTrendingMovies().results.toList())
             })
 
@@ -121,6 +122,21 @@ class MovieRepository
         } else {
             emit(null)
         }
+    }
+
+    fun letDailyTrendMovieFlowDb() = flow {
+
+        val res = theMovieDbService.getDailyTrendingMovies()
+        emit(res.results[Random.nextInt(0, 19)])
+//         val video = res.results.map {
+//             it.video
+//         }
+//
+//        if (video.isNotEmpty()){
+//            res.results.forEach{
+//                if (it.video) emit(it)
+//            }
+//        }else(emit(res.results[0]))
     }
 
 }

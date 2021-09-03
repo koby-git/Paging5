@@ -13,8 +13,8 @@ object Constants {
     const val REMOTE_KEYS_TABLE = "remotekeys"
 
     //THE MOVIE DB
-    const val API_KEY = "cbc8ee7aac105c070f5f830d4e2c2f0b"
-    const val API_ENDPOINT = "https://api.themoviedb.org/3/"
+    const val TMDB_API_KEY = "cbc8ee7aac105c070f5f830d4e2c2f0b"
+    const val TMDB_API_ENDPOINT = "https://api.themoviedb.org/3/"
     const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500/"
     const val SORT_BY_POPULARITY = "popularity.desc"
     const val INCLUDE_ADULTS = "false"

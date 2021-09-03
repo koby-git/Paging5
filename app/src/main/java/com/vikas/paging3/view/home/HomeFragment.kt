@@ -3,6 +3,7 @@ package com.vikas.paging3.view.home
 import android.os.Bundle
 import android.util.Log.d
 import android.view.View
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import com.vikas.paging3.R
+import com.vikas.paging3.util.Constants.IMAGE_BASE_URL
 import com.vikas.paging3.util.Result
 import com.vikas.paging3.view.adapters.SectionsAdapterDiff
 import kotlinx.coroutines.flow.collectLatest
@@ -22,6 +25,7 @@ private const val TAG = "HomeFragment"
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
     lateinit var homeRecyclerView: RecyclerView
+    lateinit var homeTrendMovieImage: ImageView
     lateinit var homeViewModel: HomeViewModel
 
     private val adapter = SectionsAdapterDiff({ sectionTitle ->
@@ -53,6 +57,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                 }
             })
+
+            homeViewModel.trendMovie.observe(viewLifecycleOwner,{
+                homeTrendMovieImage.load(IMAGE_BASE_URL + it.imageUrl){
+                    placeholder(R.drawable.ic_baseline_local_movies_24)
+                }
+            })
         }
     }
 
@@ -62,6 +72,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setUpViews(view: View) {
         homeRecyclerView = view.findViewById(R.id.home_recyclerview)
+        homeTrendMovieImage = view.findViewById(R.id.home_trending_movie_image)
+
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         homeRecyclerView.adapter = adapter
     }

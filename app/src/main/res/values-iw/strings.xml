@@ -3,14 +3,20 @@
 
     <string name="search_hint">חפש סרט</string>
     <string name="now_in_cinemas">עכשיו בקולנוע</string>
-    <string name="trendings">להיטי השבוע</string>
+    <string name="trending">להיטי השבוע</string>
     <string name="popular">פופולארים</string>
-    <string name="top_rated">Top rated</string>
     <string name="menu_discover">גלה</string>
     <string name="menu_search">חיפוש</string>
     <string name="menu_home">בית</string>
     <string name="genre">ז\'אנר: %1$s</string>
     <string name="rating">דירוג: %1$s</string>
     <string name="no_rating">אין</string>
+    <string name="retry">נסה שוב</string>
+    <string name="no_date">אין תאריך</string>
+    <string name="release_date">תאריך יציאה: %1$s</string>
+    <string name="top_rated">המדורגים</string>
+
+
+
 
 </resources>

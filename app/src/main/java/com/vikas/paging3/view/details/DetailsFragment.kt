@@ -50,6 +50,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         val movieDesc = view.findViewById<TextView>(R.id.details_movie_description)
         val movieRating = view.findViewById<TextView>(R.id.details_movie_rating)
         val movieGenre = view.findViewById<TextView>(R.id.details_movie_genre)
+        val movieReleaseDate = view.findViewById<TextView>(R.id.details_movie_releas_date)
         val playTrailer = view.findViewById<ImageView>(R.id.details_movie_play_trailer)
         val progressBar = view.findViewById<ProgressBar>(R.id.details_move_progressbar)
 
@@ -72,7 +73,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                 progressBar.visibility = View.VISIBLE
             }.collectLatest { movie ->
                 progressBar.visibility = View.GONE
-                Log.d(TAG, "detailsViewModel.movie.collectLatest()-> ")
                 movie?.let {
 
                     movieImage.load(IMAGE_BASE_URL + it.imageUrl) {
@@ -95,7 +95,15 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
                     }else{
                         getString(R.string.no_rating)
                     }
+
+                    val movieRd = if(it.releaseDate != null){
+                        it.releaseDate
+                    }else{
+                        getString(R.string.no_date)
+                    }
+
                     movieRating.text = String.format(getString(R.string.rating),imdbRating)
+                    movieReleaseDate.text = String.format(getString(R.string.release_date),movie.releaseDate)
 
                 }
             }

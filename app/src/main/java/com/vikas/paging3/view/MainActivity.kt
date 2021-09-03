@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
-            R.id.language_action -> {
+       /*     R.id.language_action -> {
                 val menuItemView = findViewById<View>(R.id.language_action) // SAME ID AS MENU ID
                 val popupMenu = PopupMenu(this, menuItemView)
                 popupMenu.inflate(R.menu.language_menu)
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
                 true
             }
-
+*/
 
             else -> super.onOptionsItemSelected(item)
         }
@@ -78,30 +78,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<BottomNavigationView>(R.id.navBottomBar).apply {
             setupWithNavController(findNavController(R.id.fragmentNavHost))
         }
-    }
-
-    private fun getLocaleByItemId(itemId: Int) : Locale{
-        return when(itemId){
-            R.id.language_en_action->{
-                Locale.ENGLISH
-            }
-            R.id.language_es_action->{
-                Locale("es")
-            }
-            R.id.language_iw_action->{
-                Locale( "iw")
-            }
-            else -> Locale.ENGLISH
-        }
-    }
-    private fun setLanguage(locale: Locale) {
-        Locale.setDefault(locale)
-        val resources: Resources = resources
-        val config = resources.configuration
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
-        finish()
-        startActivity(Intent(this,MainActivity::class.java))
     }
 }
 

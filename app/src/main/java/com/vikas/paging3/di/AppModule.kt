@@ -3,7 +3,7 @@ package com.vikas.paging3.di
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
-import com.vikas.paging3.util.Constants.API_ENDPOINT
+import com.vikas.paging3.util.Constants.TMDB_API_ENDPOINT
 import com.vikas.paging3.util.Constants.MOVIE_DB
 import com.vikas.paging3.data.local.MovieDatabase
 import com.vikas.paging3.data.remote.imdb.ImdbService
@@ -12,18 +12,22 @@ import com.vikas.paging3.repository.MovieRepository
 import com.vikas.paging3.util.Constants.IMDB_BASE_URL
 import com.vikas.paging3.util.Constants.IMDB_RETROFIT
 import com.vikas.paging3.util.Constants.IMDB_SERVICE
+import com.vikas.paging3.util.Constants.TMDB_API_KEY
 import com.vikas.paging3.util.Constants.TMDB_RETROFIT
 import com.vikas.paging3.util.Constants.TMDB_SERVICE
+import com.vikas.paging3.util.ISOListCodes
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Query
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -60,7 +64,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(API_ENDPOINT)
+            .baseUrl(TMDB_API_ENDPOINT)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -88,11 +92,22 @@ object AppModule {
             .build()
     }
 
+    @ExperimentalPagingApi
+    @Singleton
+    @Provides
+    fun provideOkHttpNetworkInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            val request = chain.request();
+            val url = request.url.newBuilder()
+                .addQueryParameter("api_key", TMDB_API_KEY)
+                .addQueryParameter("language", ISOListCodes.getLocaleLanguage())
+            .build();
+            val newRequest = request.newBuilder().url(url).build();
+            chain.proceed(newRequest)
+        }
+    }
 
-
-
-
-/*    //ADD HEADER == todo() change to query and not header
+/*
     @ExperimentalPagingApi
     @Singleton
     @Provides
@@ -118,11 +133,11 @@ object AppModule {
     @Provides
     fun provideOkHttpClient(
         okHttpLogger: HttpLoggingInterceptor,
-//        okHttpNetworkInterceptor: Interceptor
+        okHttpNetworkInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(okHttpLogger)
-//            .addInterceptor(okHttpNetworkInterceptor)
+            .addInterceptor(okHttpNetworkInterceptor)
             .build()
     }
 

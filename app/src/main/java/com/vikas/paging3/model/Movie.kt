@@ -18,6 +18,7 @@ data class Movie(
     var imageUrl:String? = null,
     @SerializedName("vote_average")
     val voteAverage: Double,
+    val video : Boolean = false,
 
     //My Fields
     var isFavourite :Boolean = false,
